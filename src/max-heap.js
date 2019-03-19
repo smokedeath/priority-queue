@@ -13,7 +13,12 @@ class MaxHeap {
 	}
 
 	pop() {
-
+        if (this.parentNodes.length===1) {
+        	this.detachRoot();
+		}
+		if (this.parentNodes.length>0) {
+			//
+		}
 	}
 
 	detachRoot() {
@@ -29,11 +34,13 @@ class MaxHeap {
 	}
 
 	isEmpty() {
-
+		return this.root === null && this.parentNodes.length === 0;
 	}
 
 	clear() {
-
+        this.root = null;
+        this.parentNodes = [];
+        this.tick = 0;
 	}
 
 	insertNode(node) {
@@ -41,14 +48,19 @@ class MaxHeap {
 			this.parentNodes.push(node);
 			this.tick++;
         } else
-        	if (this.tick===1 && this.parentNodes.length===1) {
+        	if (this.tick===1) {
                 this.parentNodes.push(node);
                 this.tick++;
 			} else {
-				if (this.parentNodes.length % this.tick === 0) {
-                    this.parentNodes[this.tick-2] = this.parentNodes[this.tick-1];
-                    this.parentNodes[this.tick-1] = node;
+				if (this.tick % 2 === 0) {
+                    for(let i = 0; i < this.parentNodes.length-1; i++) {
+                        this.parentNodes[i] = this.parentNodes[i+1];
+                    }
+                    this.parentNodes[this.parentNodes.length-1] = node;
+				} else {
+                    this.parentNodes.push(node);
 				}
+                this.tick++;
 			}
 
 		if (this.root === null) {
@@ -75,7 +87,17 @@ class MaxHeap {
 	}
 
 	shiftNodeUp(node) {
-
+		let rr = this.root;
+		let noCansel = true;
+		while (noCansel) {
+			if (node.parent === null) noCansel = false;
+            if (node.parent!==null) {
+            	if (node.parent === rr) {
+                    noCansel = false;
+				}
+                node.swapWithParent();
+			}
+		}
 	}
 
 	shiftNodeDown(node) {
