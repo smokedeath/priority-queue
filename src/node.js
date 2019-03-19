@@ -39,6 +39,8 @@ class Node {
         if (this.parent != null) {
             let pr = this.parent;
             let oPr = {};
+            let gleft = pr.parent!==null && pr.parent.left !==null && pr.parent.left === pr;
+            let gright = pr.parent!==null && pr.parent.right !==null && pr.parent.right === pr ;
             oPr['parent'] = pr.parent;
             oPr['left'] = pr.left;
             oPr['right'] = pr.right;
@@ -59,6 +61,8 @@ class Node {
             }
             pr.left = oCl['left'];
             pr.right = oCl['right'];
+            if (gleft) this.parent.left = this;
+            if (gright) this.parent.right = this;
 
             oPr = null;
             oCl = null;
