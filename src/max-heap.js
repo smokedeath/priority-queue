@@ -88,19 +88,19 @@ class MaxHeap {
 
 	shiftNodeUp(node) {
 		let rr = this.root;
-		let noCansel = true;
-		while (noCansel) {
-			if (node.parent === null) noCansel = false;
+        let noCansel = true;
+        while (noCansel) {
+            if (node.parent === null) noCansel = false;
             if (node.parent!==null) {
-            	if (node.parent === rr) {
+                if (node.parent === rr) {
                     noCansel = false;
-				}
+                }
                 node.swapWithParent();
-			}
-		}
-		if (!noCansel) {
-			this.root = node;
-		}
+            }
+        }
+        if (!noCansel) {
+            this.root = node;
+        }
 	}
 
 	shiftNodeDown(node) {
