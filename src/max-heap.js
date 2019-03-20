@@ -98,6 +98,9 @@ class MaxHeap {
                 node.swapWithParent();
 			}
 		}
+		if (!noCansel) {
+			this.root = node;
+		}
 	}
 
 	shiftNodeDown(node) {

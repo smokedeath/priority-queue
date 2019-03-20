@@ -55,15 +55,21 @@ class Node {
             if (this===oPr['left']) {
                 this.left = pr;
                 this.right = pr.right;
-            } else if (this===oPr['right']) {
-                this.left = pr;
-                this.left = pr.left;
-            }
+            } else
+                if (this===oPr['right']) {
+                    this.left = pr;
+                    this.left = pr.left;
+                }
             pr.left = oCl['left'];
             pr.right = oCl['right'];
             if (gleft) this.parent.left = this;
             if (gright) this.parent.right = this;
-
+            /////////////////////
+            if (this.left != null && this.left.left != null) this.left.left.parent = this.left;
+            if (this.left != null && this.left.right != null) this.left.right.parent = this.left;
+            if (this.right != null && this.right.left != null) this.right.left.parent = this.right;
+            if (this.right != null && this.right.right != null) this.right.right.parent = this.right;
+            ////////////////////
             oPr = null;
             oCl = null;
         }
