@@ -5,11 +5,13 @@ class MaxHeap {
         this.root = null;
         this.parentNodes = [];
         this.tick = 0;
+        this.currentSize = 0;
 	}
 
 	push(data, priority) {
 		this.insertNode(new Node(data, priority));
 		this.shiftNodeUp(new Node(data, priority));
+        this.currentSize++;
 	}
 
 	pop() {
@@ -19,10 +21,17 @@ class MaxHeap {
 		if (this.parentNodes.length>0) {
 			//
 		}
+		if (this.currentSize>0)
+        	this.currentSize--;
 	}
 
 	detachRoot() {
-
+		let detachedRoot = null;
+		if (this.currentSize === 1) {
+            detachedRoot = this.root;
+			this.root = null;
+		}
+		return detachedRoot;
 	}
 
 	restoreRootFromLastInsertedNode(detached) {
@@ -30,7 +39,7 @@ class MaxHeap {
 	}
 
 	size() {
-
+		return this.currentSize;
 	}
 
 	isEmpty() {
@@ -41,49 +50,19 @@ class MaxHeap {
         this.root = null;
         this.parentNodes = [];
         this.tick = 0;
+        this.currentSize = 0;
 	}
 
 	insertNode(node) {
-		if (this.parentNodes.length===0) {
-			this.parentNodes.push(node);
-			this.tick++;
-        } else
-        	if (this.tick===1) {
-                this.parentNodes.push(node);
-                this.tick++;
-			} else {
-				if (this.tick % 2 === 0) {
-                    for(let i = 0; i < this.parentNodes.length-1; i++) {
-                        this.parentNodes[i] = this.parentNodes[i+1];
-                    }
-                    this.parentNodes[this.parentNodes.length-1] = node;
-				} else {
-                    this.parentNodes.push(node);
-				}
-                this.tick++;
-			}
-
-		if (this.root === null) {
+        if(this.isEmpty()){
             this.root = node;
-		} else
-			if (this.root.left === null) {
-				this.root.left = node;
-			} else
-				if (this.root.right === null) {
-                    this.root.right = node;
-				} else
-					if (this.root.left.left === null) {
-                        this.root.left.left = node;
-					} else
-						if (this.root.left.right === null) {
-                            this.root.left.right = node;
-						} else
-							if (this.root.right.left === null) {
-								this.root.right.left = node;
-							} else
-								if (this.root.right.right === null) {
-									this.root.right.right = node;
-								}
+            this.parentNodes.push(node);
+        }
+        else{
+            this.parentNodes.push(node);
+            this.parentNodes[0].appendChild(node);
+            if(this.parentNodes[0].left !== null && this.parentNodes[0].right !== null) this.parentNodes.shift();
+        }
 	}
 
 	shiftNodeUp(node) {

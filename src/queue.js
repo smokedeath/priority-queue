@@ -12,22 +12,25 @@ class PriorityQueue {
 	}
 
 	push(data, priority) {
-		if (this.heap.parentNodes.length === this.maxSize) {
+		if (this.heap.currentSize === this.maxSize) {
             throw 'Error Max Size';
 		}
 		this.heap.push(data, priority);
 	}
 
 	shift() {
-
+		if (this.heap.currentSize === 0) {
+			throw 'queue is empty';
+		}
+		return this.heap.pop();
 	}
 
 	size() {
-
+		return this.heap.currentSize;
 	}
 
 	isEmpty() {
-		
+		return this.heap.currentSize === 0;
 	}
 }
 
