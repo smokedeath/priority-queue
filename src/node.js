@@ -39,25 +39,26 @@ class Node {
         if (this.parent != null) {
             let pr = this.parent;
             let oPr = {};
-            let gleft = pr.parent!==null && pr.parent.left !==null && pr.parent.left === pr;
-            let gright = pr.parent!==null && pr.parent.right !==null && pr.parent.right === pr ;
+            let gleft = pr.parent != null && pr.parent.left != null && pr.parent.left === pr;
+            let gright = pr.parent != null && pr.parent.right != null && pr.parent.right === pr ;
             oPr['parent'] = pr.parent;
             oPr['left'] = pr.left;
             oPr['right'] = pr.right;
             let oCl = {};
             oCl['parent'] = this.parent;
             oCl['left'] = this.left;
+            oCl['right'] = this.right;
 
             this.parent = oPr['parent'];
             pr.parent = this;
-            if (pr.left!=null && pr.left!==this) pr.left.parent = this;
-            if (pr.right!=null && pr.right!==this) pr.right.parent = this;
-            if (this===oPr['left']) {
+            if (pr.left != null && pr.left !== this) pr.left.parent = this;
+            if (pr.right != null && pr.right !== this) pr.right.parent = this;
+            if (this === oPr['left']) {
                 this.left = pr;
                 this.right = pr.right;
             } else
-                if (this===oPr['right']) {
-                    this.left = pr;
+                if (this === oPr['right']) {
+                    this.right = pr;
                     this.left = pr.left;
                 }
             pr.left = oCl['left'];
