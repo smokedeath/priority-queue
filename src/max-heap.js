@@ -4,7 +4,6 @@ class MaxHeap {
 	constructor() {
         this.root = null;
         this.parentNodes = [];
-        this.tick = 0;
         this.currentSize = 0;
 	}
 
@@ -74,7 +73,12 @@ class MaxHeap {
                 if (node.parent === rr) {
                     noCansel = false;
                 }
+                let oldPidx = this.parentNodes.indexOf(node.parent);
+                let parent = node.parent;
+                let nPidx = this.parentNodes.indexOf(node);
                 node.swapWithParent();
+                this.parentNodes[oldPidx] = node;
+                this.parentNodes[nPidx] = parent;
             }
         }
         if (!noCansel) {
