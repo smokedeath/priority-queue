@@ -8,8 +8,9 @@ class MaxHeap {
     }
 
     push(data, priority) {
-        this.insertNode(new Node(data, priority));
-        this.shiftNodeUp(new Node(data, priority));
+        let newNode = new Node(data, priority);
+        this.insertNode(newNode);
+        this.shiftNodeUp(newNode);
         this.currentSize++;
     }
 
@@ -38,7 +39,21 @@ class MaxHeap {
     }
 
     restoreRootFromLastInsertedNode(detached) {
-
+        if (this.currentSize > 0) {
+            this.root = this.parentNodes.pop();
+            this.root.parent = null;
+            if (detached.left != null && detached.left !== this.root) {
+                this.root.left = detached.left;
+                this.root.left.parent = this.root;
+            }
+            if (detached.right != null && detached.right !== this.root) {
+                this.root.right = detached.right;
+                this.root.right.parent = this.root;
+            }
+            if (this.root.right === null) {
+                this.parentNodes.unshift(this.root);
+            }
+        }
     }
 
     size() {
@@ -73,8 +88,12 @@ class MaxHeap {
             let parent = node.parent;
             let nPidx = this.parentNodes.indexOf(node);
             node.swapWithParent();
-            this.parentNodes[oldPidx] = node;
-            this.parentNodes[nPidx] = parent;
+            if (oldPidx >= 0) {
+                this.parentNodes[oldPidx] = node;
+            }
+            if (nPidx >= 0) {
+                this.parentNodes[nPidx] = parent;
+            }
             this.shiftNodeUp(node);
         } else {
             this.root = node;
@@ -119,20 +138,6 @@ class MaxHeap {
             if (newParent.parent === null) this.root = newParent;
             this.shiftNodeDown(node);
         }
-
-        // if (node.left != null) {
-        //    let newParent = node.left;
-        //     let oldIdx = this.parentNodes.indexOf(node.left);
-        //     let nIdx = this.parentNodes.indexOf(node);
-        //     node.left.swapWithParent();
-        //     if (nIdx >= 0) {
-        //         this.parentNodes[nIdx] = newParent;
-        //     }
-        //     this.parentNodes[oldIdx] = node;
-        //     if (newParent.parent === null) this.root = newParent;
-        //     this.shiftNodeDown(node);
-        // }
-
     }
 }
 
