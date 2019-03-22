@@ -9,8 +9,11 @@ h.root.appendChild(new Node(1, 20));
 h.root.appendChild(new Node(2, 7));
 h.root.left.appendChild(new Node(3, 5));
 
-const newRoot = h.root.left;
-const newDeepest = h.root;
+h.parentNodes = [
+    h.root.left,
+    h.root.right,
+    h.root.left.left,
+];
 
 h.shiftNodeDown(h.root);
 console.log('res');

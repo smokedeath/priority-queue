@@ -84,7 +84,13 @@ class MaxHeap {
 	shiftNodeDown(node) {
 	    if (node.left !== null) {
 	        let newParent = node.left;
+            let oldIdx = this.parentNodes.indexOf(node.left);
+            let nIdx = this.parentNodes.indexOf(node);
             node.left.swapWithParent();
+            if (nIdx >= 0) {
+                this.parentNodes[nIdx] = newParent;
+            }
+            this.parentNodes[oldIdx] = node;
             if (newParent.parent === null) this.root = newParent;
             this.shiftNodeDown(node);
         }
