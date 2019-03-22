@@ -15,22 +15,26 @@ class MaxHeap {
 
 	pop() {
         if (this.parentNodes.length===1) {
-        	this.detachRoot();
+            this.restoreRootFromLastInsertedNode(this.detachRoot());
 		}
 		if (this.parentNodes.length>0) {
-			//
 		}
 		if (this.currentSize>0)
         	this.currentSize--;
 	}
 
 	detachRoot() {
-		let detachedRoot = null;
-		if (this.currentSize === 1) {
-            detachedRoot = this.root;
-			this.root = null;
-		}
-		return detachedRoot;
+        let detachedRoot = this.root;
+        if (this.currentSize > 0) {
+            if (this.currentSize === 1) {
+                this.root = null;
+            } else {
+                if (this.parentNodes.indexOf(detachedRoot)>=0) {
+                    this.parentNodes.shift();
+                }
+            }
+        }
+        return detachedRoot;
 	}
 
 	restoreRootFromLastInsertedNode(detached) {
@@ -48,7 +52,6 @@ class MaxHeap {
 	clear() {
         this.root = null;
         this.parentNodes = [];
-        this.tick = 0;
         this.currentSize = 0;
 	}
 
@@ -65,28 +68,26 @@ class MaxHeap {
 	}
 
 	shiftNodeUp(node) {
-		let rr = this.root;
-        let noCansel = true;
-        while (noCansel) {
-            if (node.parent === null) noCansel = false;
-            if (node.parent!==null) {
-                if (node.parent === rr) {
-                    noCansel = false;
-                }
-                let oldPidx = this.parentNodes.indexOf(node.parent);
-                let parent = node.parent;
-                let nPidx = this.parentNodes.indexOf(node);
-                node.swapWithParent();
-                this.parentNodes[oldPidx] = node;
-                this.parentNodes[nPidx] = parent;
-            }
-        }
-        if (!noCansel) {
-            this.root = node;
+	    if (node.parent !== null) {
+            let oldPidx = this.parentNodes.indexOf(node.parent);
+            let parent = node.parent;
+            let nPidx = this.parentNodes.indexOf(node);
+            node.swapWithParent();
+            this.parentNodes[oldPidx] = node;
+            this.parentNodes[nPidx] = parent;
+            this.shiftNodeUp(node);
+        } else {
+	        this.root = node;
         }
 	}
 
 	shiftNodeDown(node) {
+	    if (node.left !== null) {
+	        let newParent = node.left;
+            node.left.swapWithParent();
+            if (newParent.parent === null) this.root = newParent;
+            this.shiftNodeDown(node);
+        }
 
 	}
 }
